@@ -136,8 +136,21 @@ public class Tests extends TestHelper{
 
     @Test
     public void inputDataTypeTests(){
-        WebElement invoiceField = driver.findElement(By.xpath("//ui-field[@data-wt-label='Commission fee']"));
+        closeCookies();
+        WebElement invoiceField = driver.findElement(By.xpath("//ui-field[@data-wt-label='Invoice amount']"));
+        assertEquals("EUR", invoiceField.findElement(By.className("units")).getText());
 
+        WebElement advanceRate = driver.findElement(By.xpath("//ui-field[@data-wt-label='Advance rate']"));
+        assertEquals("%", advanceRate.findElement(By.className("units")).getText());
+
+        WebElement interestRate = driver.findElement(By.xpath("//ui-field[@data-wt-label='Interest rate']"));
+        assertEquals("%", interestRate.findElement(By.className("units")).getText());
+
+        WebElement paymentTerm = driver.findElement(By.xpath("//ui-field[@data-wt-label='Payment term']"));
+        assertEquals("days", paymentTerm.findElement(By.className("units")).getText());
+
+        WebElement commissionFee = driver.findElement(By.xpath("//ui-field[@data-wt-label='Commission fee']"));
+        assertEquals("% per invoice", commissionFee.findElement(By.className("units")).getText());
     }
 
 }
