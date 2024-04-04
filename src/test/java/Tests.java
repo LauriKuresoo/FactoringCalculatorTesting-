@@ -175,4 +175,20 @@ public class Tests extends TestHelper{
         }
     }
 
+    @Test
+    public void fincaningExpensePercentageTest(){
+        closeCookies();
+        TestSet set = new TestSet(100.0, AdvanceRate.a90, 5.3, PaymentTerm.a60, 2.7);
+        fillInputFields(set);
+        calculate();
+
+        double correctOutput = calculatateValidOutput(set);
+        WebElement result = driver.findElement(By.id("result_perc"));
+        double applicationOutput = Double.valueOf(result.getText());
+
+        BigDecimal relation = new BigDecimal((correctOutput/set.getInvoiceAmount())*100).setScale(2, RoundingMode.HALF_UP);
+
+        assertEquals( relation.doubleValue(), applicationOutput);
+    }
+
 }
