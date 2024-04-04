@@ -8,6 +8,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.channels.Selector;
 import java.util.concurrent.TimeUnit;
 
@@ -111,7 +113,8 @@ public class TestHelper {
                 * (set.getInterestRate()/100)
                 * (Double.parseDouble(set.getPaymentTerm().label)/360)
                 + set.getInvoiceAmount() * (set.getCommissionFee()/100);
-        return answer;
+        BigDecimal bigDecimal = new BigDecimal(answer).setScale(2, RoundingMode.HALF_DOWN);
+        return bigDecimal.doubleValue();
     }
 
 

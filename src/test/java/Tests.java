@@ -7,6 +7,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +29,7 @@ public class Tests extends TestHelper{
         WebElement result = driver.findElement(By.id("result"));
         double applicationOutput = Double.valueOf(result.getText());
 
-        assertEquals( round(correctOutput * 100.0) / 100.0, applicationOutput);
+        assertEquals( correctOutput, applicationOutput);
     }
 
     @Test
@@ -151,6 +153,26 @@ public class Tests extends TestHelper{
 
         WebElement commissionFee = driver.findElement(By.xpath("//ui-field[@data-wt-label='Commission fee']"));
         assertEquals("% per invoice", commissionFee.findElement(By.className("units")).getText());
+    }
+    
+    @Test
+    public void tryAllSelectorValues(){
+        closeCookies();
+        TestSet set = new TestSet(2.0, AdvanceRate.a90, 2.0, PaymentTerm.a60, 2.0 );
+        for (AdvanceRate rate : AdvanceRate.values()) {
+            for (PaymentTerm term : PaymentTerm.values()) {
+                set.setAdvanceRate(rate);
+                set.setPaymentTerm(term);
+                fillInputFields(set);
+                calculate();
+
+                double correctOutput = calculatateValidOutput(set);
+                WebElement result = driver.findElement(By.id("result"));
+                double applicationOutput = Double.valueOf(result.getText());
+
+                assertEquals( correctOutput, applicationOutput);
+            }
+        }
     }
 
 }
