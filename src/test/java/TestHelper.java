@@ -73,7 +73,7 @@ public class TestHelper {
         button.click();
     }
 
-    private void invoiceAmountFill(double invoiceAmount){
+    private void invoiceAmountFill(Double invoiceAmount){
         this.invoiceAmount.clear();
         this.invoiceAmount.sendKeys(String.valueOf(invoiceAmount));
     }
@@ -82,18 +82,18 @@ public class TestHelper {
         this.advanceRateSelector.selectByValue(rate.label);
     }
 
-    private void interestRateFill(double interestRate){
+    private void interestRateFill(Double interestRate){
         this.interestRate.clear();
-        this.interestRate.sendKeys(Double.toString(interestRate));
+        this.interestRate.sendKeys(String.valueOf(interestRate));
     }
 
     private void paymentTermFill(PaymentTerm term){
         this.paymenttermSelector.selectByValue(term.label);
     }
 
-    private void commissionFeeFill(double commissionFee){
+    private void commissionFeeFill(Double commissionFee){
         this.commisionFee.clear();
-        this.commisionFee.sendKeys(Double.toString(commissionFee));
+        this.commisionFee.sendKeys(String.valueOf(commissionFee));
     }
 
 

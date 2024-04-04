@@ -4,13 +4,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TestSet {
-    double InvoiceAmount;
+    Double InvoiceAmount;
     AdvanceRate AdvanceRate;
-    double InterestRate;
+    Double InterestRate;
     PaymentTerm PaymentTerm;
-    double CommissionFee;
+    Double CommissionFee;
 
-    public TestSet(double invoiceAmount, AdvanceRate advanceRate, double interestRate, PaymentTerm paymentTerm, double commissionFee) {
+    public TestSet(Double invoiceAmount, AdvanceRate advanceRate, Double interestRate, PaymentTerm paymentTerm, Double commissionFee) {
         InvoiceAmount = invoiceAmount;
         AdvanceRate = advanceRate;
         InterestRate = interestRate;
