@@ -4,7 +4,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.nio.channels.Selector;
 import java.util.concurrent.TimeUnit;
 
 enum AdvanceRate {
@@ -28,20 +32,45 @@ public class TestHelper {
     static WebDriver driver;
     String baseUrl = "https://www.swedbank.lt/business/finance/trade/factoring?language=ENG";
 
-    WebElement invoiceAmount = driver.findElement(By.id("D5"));
-    WebElement advanceRate = driver.findElement(By.id("D6"));
-    WebElement interestRate = driver.findElement(By.id("D7"));
-    WebElement paymentTerm = driver.findElement(By.id("D8"));
-    WebElement commisionFee = driver.findElement(By.id("D9"));
-
+    WebElement invoiceAmount;
+    WebElement advanceRate;
+    Select advanceRateSelector;
+    WebElement interestRate;
+    WebElement paymentTerm;
+    Select paymenttermSelector;
+    WebElement commisionFee;
+    WebDriverWait wait;
 
 
     @Before
     public void setUp(){
         System.setProperty("webdriver.chrome.driver", "C:\\Program Files\\UserDrivers\\chromedriver-win64\\chromedriver.exe");
         driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get(baseUrl);
+        wait = new WebDriverWait(driver, 2);
+
+        invoiceAmount = driver.findElement(By.id("D5"));
+
+        advanceRate = driver.findElement(By.id("D6"));
+        advanceRateSelector = new Select(advanceRate);
+
+        interestRate = driver.findElement(By.id("D7"));
+
+        paymentTerm = driver.findElement(By.id("D8"));
+        paymenttermSelector = new Select(paymentTerm);
+
+        commisionFee = driver.findElement(By.id("D9"));
+    }
+
+    void closeCookies(){
+        WebElement cookiesAccept = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='button ui-cookie-consent__accept-button']")));
+        cookiesAccept.click();
+    }
+
+    void calculate(){
+        WebElement button = driver.findElement(By.id("calculate-factoring"));
+        button.click();
     }
 
     private void invoiceAmountFill(double invoiceAmount){
@@ -50,8 +79,7 @@ public class TestHelper {
     }
 
     private void advanceRateFill(AdvanceRate rate){
-        this.advanceRate.clear();
-        this.advanceRate.sendKeys(rate.label);
+        this.advanceRateSelector.selectByValue(rate.label);
     }
 
     private void interestRateFill(double interestRate){
@@ -60,8 +88,7 @@ public class TestHelper {
     }
 
     private void paymentTermFill(PaymentTerm term){
-        this.paymentTerm.clear();
-        this.paymentTerm.sendKeys(term.label);
+        this.paymenttermSelector.selectByValue(term.label);
     }
 
     private void commissionFeeFill(double commissionFee){
@@ -70,20 +97,20 @@ public class TestHelper {
     }
 
 
-    void fillInputFields(double invoiceAmount, AdvanceRate advanceRate, double interestRate, PaymentTerm paymentTerm, double commissionFee){
-        invoiceAmountFill(invoiceAmount);
-        advanceRateFill(advanceRate);
-        interestRateFill(interestRate);
-        paymentTermFill(paymentTerm);
-        commissionFeeFill(commissionFee);
+    void fillInputFields(TestSet set){
+        invoiceAmountFill(set.getInvoiceAmount());
+        advanceRateFill(set.getAdvanceRate());
+        interestRateFill(set.getInterestRate());
+        paymentTermFill(set.getPaymentTerm());
+        commissionFeeFill(set.getCommissionFee());
     }
 
-    double calculatateValidOutput(double invoiceAmount, AdvanceRate advanceRate, double interestRate, PaymentTerm paymentTerm, double commissionFee){
-        double answer = invoiceAmount *
-                (Double.valueOf(advanceRate.label)/100)
-                * (interestRate/100)
-                * (Double.valueOf(paymentTerm.label)/360)
-                + invoiceAmount * (commissionFee/100);
+    double calculatateValidOutput(TestSet set){
+        double answer = set.getInvoiceAmount() *
+                (Double.parseDouble(set.getAdvanceRate().label)/100)
+                * (set.getInterestRate()/100)
+                * (Double.parseDouble(set.getPaymentTerm().label)/360)
+                + set.getInvoiceAmount() * (set.getCommissionFee()/100);
         return answer;
     }
 
