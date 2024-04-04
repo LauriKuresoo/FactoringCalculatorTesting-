@@ -122,8 +122,8 @@ public class Tests extends TestHelper{
         TestSet  set = new TestSet(1.0, AdvanceRate.a75, 1.0, PaymentTerm.a30, null);
         fillInputFields(set);
 
-        WebElement invoiceField = driver.findElement(By.xpath("//ui-field[@data-wt-label='Commission fee']"));
-        WebElement error = invoiceField.findElement(By.xpath("//ui-hint[text()='Please fill out this field.']"));
+        WebElement commissionFeefield = driver.findElement(By.xpath("//ui-field[@data-wt-label='Commission fee']"));
+        WebElement error = commissionFeefield.findElement(By.xpath("//ui-hint[text()='Please fill out this field.']"));
         assertEquals("valueMissing" ,error.getAttribute("error-type"));
 
         calculate();
@@ -135,6 +135,9 @@ public class Tests extends TestHelper{
     }
 
     @Test
-    public
+    public void inputDataTypeTests(){
+        WebElement invoiceField = driver.findElement(By.xpath("//ui-field[@data-wt-label='Commission fee']"));
+
+    }
 
 }
